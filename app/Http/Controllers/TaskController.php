@@ -12,7 +12,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return view('tasks.index');
+        $tasks = Task::all();
+        return view('tasks.index', compact('tasks'));
     }
 
     /**
@@ -28,7 +29,13 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->route('tasks.index');
+        $tasks = new Task;
+        $tasks->title = $request->title;
+        $tasks->description = $request->description;
+        $tasks->time = $request->time;
+        $tasks->priority = $request->priority;
+        $tasks->save();
+        return redirect()->route('tasks.index')->with('status', 'Task Successfully Added!');
     }
 
     /**

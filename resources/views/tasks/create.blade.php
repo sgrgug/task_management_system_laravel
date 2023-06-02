@@ -6,19 +6,31 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="bg-stone-300 py-10"> 
-        <div class="max-w-screen-sm m-auto">
-            <div class="bg-black text-white text-bold p-2">Create New Task Here</div>
-            <form action="{{ route('tasks.store') }}" method="post">
-                @csrf
-                <label for="title">Title</label>
-                <input class="w-full p-2" type="text" name="title" id="title" placeholder="Title">
-                <label for="title">Description</label>
-                <input class="w-full p-2" type="text" name="description" id="description" placeholder="Description">
-                <input class="w-full p-2 bg-green-700 text-bold text-white uppercase" type="submit">
-            </form>
-        </div>
+    <div class="bg-black text-white text-center text-3xl p-3">
+      Create Task
     </div>
+    <div class="max-w-screen-xl m-auto p-2">
+      <a href="{{ route('home') }}">Home</a> > <a href="{{ route('tasks.index') }}">All Tasks</a> > <a href="{{ route('tasks.create') }}">Create Task</a>
+    </div>
+    <div class="max-w-screen-lg m-auto bg-stone-200 p-2">
+        <form class="p-4" action="{{ route('tasks.store') }}" method="post">
+            @csrf
+            <label for="title">Title</label>
+            <input class="w-full p-2" type="text" name="title">
 
+            <label for="description">Description</label>
+            <textarea class="w-full p-2" type="text" name="description"></textarea>
+
+            <label for="time">Time</label>
+            <input class="w-full p-2" type="text" name="time">
+
+            <label for="priority">Priority</label>
+            <select class="m-1 w-full" name="priority">
+                <option value="1">More Priority</option>
+                <option value="0">Less Priority</option>
+            </select>
+            <input class="w-full bg-green-400 p-3 font-center text-white text-2xl cursor-pointer" type="submit" value="Create Task">
+        </form>
+    </div>
 </body>
 </html>
