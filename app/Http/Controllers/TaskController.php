@@ -29,12 +29,35 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        //validation
+        $validate = $request->validate([
+            'title'=>'required',
+            'description'=>'required',
+            'time'=>'required',
+            'priority'=>'required',
+            'photo' => 'required',
+        ]);
+
         $tasks = new Task;
         $tasks->title = $request->title;
         $tasks->description = $request->description;
         $tasks->time = $request->time;
         $tasks->priority = $request->priority;
+        
+        // Get the file from the request
+        $photo = $request->file('photo');
+
+        // Generate a unique name for the file
+        $filename = time() . '.' . $photo->getClientOriginalExtension();
+
+        // Move the file to the desired location (e.g., public/uploads folder)
+        $photo->move(public_path('uploads'), $filename);
+
+        // Storing the filenam in database(photo attribute)
+        $tasks->photo = $filename;
+
         $tasks->save();
+        
         return redirect()->route('tasks.index')->with('status', 'Task Successfully Added!');
     }
 
@@ -43,7 +66,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return view('tasks.show');
+        return view('tasks.show', compact('task'));
     }
 
     /**

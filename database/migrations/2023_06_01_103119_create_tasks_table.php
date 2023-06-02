@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('time');
             $table->boolean('priority');
+            $table->string('photo');
             $table->timestamps();
         });
     }
