@@ -74,7 +74,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        return view('tasks.edit');
+        return view('tasks.edit', compact('task'));
     }
 
     /**
@@ -82,7 +82,36 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+
+        //validation
+        $validate = $request->validate([
+            'title'=>'required',
+            'description'=>'required',
+            'time'=>'required',
+            'priority'=>'required',
+            'photo' => 'required',
+        ]);
+
+        $task->title = $request->title;
+        $task->description = $request->description;
+        $task->time = $request->time;
+        $task->priority = $request->priority;
+        
+        // Get the file from the request
+        $photo = $request->file('photo');
+
+        // Generate a unique name for the file
+        $filename = time() . '.' . $photo->getClientOriginalExtension();
+
+        // Move the file to the desired location (e.g., public/uploads folder)
+        $photo->move(public_path('uploads'), $filename);
+
+        // Storing the filenam in database(photo attribute)
+        $task->photo = $filename;
+
+        $task->update();
+        
+        return redirect()->route('tasks.index')->with('status', 'Task Successfully Added!');
     }
 
     /**
@@ -90,6 +119,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return redirect()->route('tasks.index')->with('status', 'Post deleted successfully.');
     }
 }

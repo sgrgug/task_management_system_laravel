@@ -15,7 +15,17 @@
     <div class="max-w-screen-lg m-auto bg-stone-200 p-2">
         <div class="bg-white p-2 rounded">
             <img class="w-24 h-24" src="{{ asset('uploads/'.$task->photo) }}" alt="">
-            <p class="font-bold p-4">{{ $task->title }}</p>
+            <div class="flex justify-between items-center">
+              <p class="font-bold p-4">{{ $task->title }}</p>
+              <div class="flex space-x-1">
+                <a class="bg-green-600 text-white p-2 rounded" href="{{ route('tasks.edit', $task) }}">Edit</a>
+                <form class="bg-red-600 text-white p-2 rounded" method="POST" action="{{ route('tasks.destroy', $task) }}">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit">Delete</button>
+                </form>
+              </div>
+            </div>
             <hr>
             <p class="p-4">{{ $task->description }}</p>
         </div>
