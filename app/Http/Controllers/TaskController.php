@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class TaskController extends Controller
 {
@@ -119,6 +120,11 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+
+        $name = $task->photo;
+
+        File::delete(public_path('uploads/'.$name));
+
         $task->delete();
 
         return redirect()->route('tasks.index')->with('status', 'Post deleted successfully.');
